@@ -13,13 +13,15 @@ import java.util.List;
 public class FlightBookingTest {
 
     WebDriver driver = new ChromeDriver();
-
+    WebDriverWait wait;
 
     @Test
     public void testThatResultsAppearForAOneWayJourney() {
 
         setDriverPath();
         driver.get("https://www.cleartrip.com/");
+        driver.manage().window().maximize();
+        wait = new WebDriverWait(driver,20);
         waitFor(2000);
         driver.findElement(By.id("OneWay")).click();
 
@@ -28,20 +30,34 @@ public class FlightBookingTest {
 
         //wait for the auto complete options to appear for the origin
 
-        waitFor(2000);
-        List<WebElement> originOptions = driver.findElement(By.id("ui-id-1")).findElements(By.tagName("li"));
-        originOptions.get(0).click();
+        waitFor(6000);
+       // List<WebElement> originOptions = driver.findElement(By.id("ui-id-1")).findElements(By.tagName("li"));
+        //originOptions.get(0).click();
+        
+        //Since id is not unique in this case and is dynamically changing on each page load. Hence we will have to use some other attribute to locate the webelement
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//ul/li[1]/a[contains(text(),'Bangalore')]"))));
+        WebElement originOptions =  driver.findElement(By.xpath("//ul/li[1]/a[contains(text(),'Bangalore')]"));
+        
+        originOptions.click();
 
+        waitFor(2000);
+        
         driver.findElement(By.id("toTag")).clear();
         driver.findElement(By.id("toTag")).sendKeys("Delhi");
 
         //wait for the auto complete options to appear for the destination
 
-        waitFor(2000);
+        waitFor(6000);
         //select the first item from the destination auto complete list
-        List<WebElement> destinationOptions = driver.findElement(By.id("ui-id-2")).findElements(By.tagName("li"));
-        destinationOptions.get(0).click();
-
+        //List<WebElement> destinationOptions = driver.findElement(By.id("ui-id-2")).findElements(By.tagName("li"));
+        //destinationOptions.get(0).click();
+        
+        //Since id is not unique in this case and is dynamically changing on each page load. Hence we will have to use some other attribute to locate the webelement
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//ul/li[1]/a[contains(text(),'Delhi')]"))));
+        WebElement destinationOptions =  driver.findElement(By.xpath("//ul/li[1]/a[contains(text(),'Delhi')]"));
+        waitFor(1000);
+        destinationOptions.click();
+        
         driver.findElement(By.xpath("//*[@id='ui-datepicker-div']/div[1]/table/tbody/tr[3]/td[7]/a")).click();
 
         //all fields filled in. Now click on search
