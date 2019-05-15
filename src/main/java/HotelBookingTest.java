@@ -27,12 +27,17 @@ public class HotelBookingTest {
         setDriverPath();
 
         driver.get("https://www.cleartrip.com/");
-        hotelLink.click();
+        
+        //Here we are trying to access WebElement which is inside a Page Factory. So for that we will need to create & initialize PageFactory object.
+        HotelBookingTest pageFactoryObj = PageFacoty.initElements(driver,HotelBookingTest.class);
+        
+        //Now we can access the WebElements by using object of PageFactory i.e. pageFactoryObj
+        pageFactoryObj.hotelLink.click();
 
-        localityTextBox.sendKeys("Indiranagar, Bangalore");
+        pageFactoryObj.localityTextBox.sendKeys("Indiranagar, Bangalore");
 
-        new Select(travellerSelection).selectByVisibleText("1 room, 2 adults");
-        searchButton.click();
+        new Select(pageFactoryObj.travellerSelection).selectByVisibleText("1 room, 2 adults");
+        pageFactoryObj.searchButton.click();
 
         driver.quit();
 
