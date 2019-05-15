@@ -19,7 +19,10 @@ public class SignInTest {
 
         driver.findElement(By.linkText("Your trips")).click();
         driver.findElement(By.id("SignIn")).click();
-
+        
+        //Since SignIn Button is inside an iframe So we need to Switch to that Frame
+        driver.switchTo().framw("modal_window");
+        
         driver.findElement(By.id("signInButton")).click();
 
         String errors1 = driver.findElement(By.id("errors1")).getText();
